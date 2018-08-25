@@ -27,7 +27,7 @@ public struct Spinner {
         cursor = 0
     }
 
-    public enum Kind {
+    public enum Kind: CaseIterable {
         case box1
         case box2
         case box3
