@@ -21,8 +21,8 @@ final class ProgressSpinnerTests: XCTestCase {
     /// Test progress bar when writing to a non tty stream.
     func testSimpleProgresSpinner() {
         let outStream = BufferedOutputByteStream()
-        let spinner = Spinner(kind: oneOf(.box1, .bar1, .spin1))
-        let isShowStopped = oneOf(true, false)
+        let spinner = Spinner(kind: Spinner.Kind.allCases.randomElement()!)
+        let isShowStopped = Bool.random()
         let progressSpinner = ProgressSpinnerKit.createProgressSpinner(forStream: outStream, header: "test", isShowStopped: isShowStopped, spinner: spinner)
         XCTAssertTrue(progressSpinner is SimpleProgressSpinner)
 
@@ -45,8 +45,8 @@ final class ProgressSpinnerTests: XCTestCase {
             XCTFail("Couldn't create pseudo terminal.")
             return
         }
-        let spinner = Spinner(kind: oneOf(.box1, .bar1, .spin1))
-        let isShowStopped = oneOf(true, false)
+        let spinner = Spinner(kind: Spinner.Kind.allCases.randomElement()!)
+        let isShowStopped = Bool.random()
         let progressSpinner = ProgressSpinnerKit.createProgressSpinner(forStream: pty.outStream, header: "TestHeader", isShowStopped: isShowStopped, spinner: spinner)
         XCTAssertTrue(progressSpinner is ProgressSpinner)
 
@@ -94,10 +94,6 @@ final class ProgressSpinnerTests: XCTestCase {
         spinner.stop()
     }
 
-}
-
-private func oneOf<T: Any>(_ items: T...) -> T {
-    return items[Int(arc4random_uniform(UInt32(items.count)))]
 }
 
 private final class PseudoTerminal {

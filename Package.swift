@@ -1,4 +1,4 @@
-// swift-tools-version:4.0
+// swift-tools-version:4.2
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -9,7 +9,7 @@ let package = Package(
         .library(name: "ProgressSpinnerKit", targets: ["ProgressSpinnerKit"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/apple/swift-package-manager.git", from: "0.2.1"),
+        .package(url: "https://github.com/apple/swift-package-manager.git", from: "0.3.0"),
     ],
     targets: [
         .target(name: "ProgressSpinnerKit", dependencies: ["Utility"]),
