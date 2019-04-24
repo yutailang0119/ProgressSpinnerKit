@@ -7,7 +7,7 @@
 
 import Foundation
 import Basic
-import Utility
+import SPMUtility
 
 private var fps: useconds_t {
     let fps: Double = 1 / 60

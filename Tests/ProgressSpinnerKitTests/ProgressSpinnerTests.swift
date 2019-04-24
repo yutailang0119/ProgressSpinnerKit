@@ -65,7 +65,7 @@ final class ProgressSpinnerTests: XCTestCase {
         thread.join()
         pty.closeMaster()
 
-        let chuzzledOutput = output.chuzzle()!
+        let chuzzledOutput = output.spm_chuzzle()!
         let prefix = "\u{1B}[2K"
         XCTAssertTrue(chuzzledOutput.hasPrefix(prefix))
         let suffix = isShowStopped ? "\u{1B}[32m\u{1B}[1mStop\u{1B}[0m" : ""
