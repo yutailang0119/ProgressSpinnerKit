@@ -36,7 +36,7 @@ final class ProgressSpinnerTests: XCTestCase {
         let verificationFrames = (0..<frameCount).reduce(into: "test\n") { result, _ in
             result += "\(verificationSpinner.frame)\n"
         } + verificationSuffix
-        XCTAssertEqual(outStream.bytes.asString, verificationFrames)
+        XCTAssertEqual(outStream.bytes.validDescription, verificationFrames)
     }
 
     /// Test progress bar when writing a tty stream.
