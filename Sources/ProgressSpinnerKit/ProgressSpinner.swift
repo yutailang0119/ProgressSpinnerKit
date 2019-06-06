@@ -181,9 +181,10 @@ final class ProgressSpinner: ProgressSpinnable {
 }
 
 /// Creates colored or simple progress spinner based on the provided output stream.
-public func createProgressSpinner(forStream stream: OutputByteStream, header: String, isShowStopped: Bool = true, spinner: Spinner = Spinner(kind: .box1)) -> ProgressSpinnable {
-    guard let stdStream = stream as? LocalFileOutputByteStream else {
-        return SimpleProgressSpinner(stream: stream, header: header, isShowStopped: isShowStopped, spinner: spinner)
+public func createProgressSpinner(forStream stderrStream: ThreadSafeOutputByteStream, header: String, isShowStopped: Bool = true, spinner: Spinner = Spinner(kind: .box1)) -> ProgressSpinnable {
+
+    guard let stdStream = stderrStream.stream as? LocalFileOutputByteStream else {
+        return SimpleProgressSpinner(stream: stderrStream.stream, header: header, isShowStopped: isShowStopped, spinner: spinner)
     }
 
     // If we have a terminal, use animated progress spinener.
@@ -193,9 +194,9 @@ public func createProgressSpinner(forStream stream: OutputByteStream, header: St
 
     // If the terminal is dumb, use single line progress spinner.
     if TerminalController.terminalType(stdStream) == .dumb {
-        return SingleLineProgressSpinnar(stream: stream, header: header, isShowStopped: isShowStopped, spinner: spinner)
+        return SingleLineProgressSpinnar(stream: stderrStream.stream, header: header, isShowStopped: isShowStopped, spinner: spinner)
     }
 
     // Use simple progress spinner by default.
-    return SimpleProgressSpinner(stream: stream, header: header, isShowStopped: isShowStopped, spinner: spinner)
+    return SimpleProgressSpinner(stream: stderrStream.stream, header: header, isShowStopped: isShowStopped, spinner: spinner)
 }
