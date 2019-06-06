@@ -56,7 +56,10 @@ final class SingleLineProgressSpinnar: ProgressSpinnable {
         self.stream <<< "Start..."
         self.stream <<< "\n"
 
-        queue.async { [unowned self] in
+        queue.async { [weak self] in
+            guard let self = self else {
+                return
+            }
             while self.isProgressing {
                 self.stream <<< self.spinner.frame
                 self.stream <<< "\n"
@@ -108,7 +111,10 @@ final class SimpleProgressSpinner: ProgressSpinnable {
             isClear = false
         }
 
-        queue.async { [unowned self] in
+        queue.async { [weak self] in
+            guard let self = self else {
+                return
+            }
             while self.isProgressing {
                 self.stream <<< self.spinner.frame
                 self.stream <<< "\n"
@@ -155,15 +161,18 @@ final class ProgressSpinner: ProgressSpinnable {
         isProgressing = true
 
         queue.async { [weak self] in
-            while self?.isProgressing ?? false {
-                self?.term.clearLine()
-                self?.term.write(self?.header ?? "", inColor: .green, bold: true)
-                self?.term.write(self?.spinner.frame ?? "", inColor: .green)
-                self?.term.endLine()
+            guard let self = self else {
+                return
+            }
+            while self.isProgressing {
+                self.term.clearLine()
+                self.term.write(self.header, inColor: .green, bold: true)
+                self.term.write(self.spinner.frame, inColor: .green)
+                self.term.endLine()
 
-                self?.term.moveCursor(up: 1)
+                self.term.moveCursor(up: 1)
 
-                usleep(self?.sleepInterval ?? 0)
+                usleep(self.sleepInterval)
             }
         }
 
