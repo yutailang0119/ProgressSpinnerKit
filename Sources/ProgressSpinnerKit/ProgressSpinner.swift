@@ -7,7 +7,7 @@
 
 import Foundation
 import Basic
-import Utility
+import SPMUtility
 
 private var fps: useconds_t {
     let fps: Double = 1 / 60
@@ -56,7 +56,10 @@ final class SingleLineProgressSpinnar: ProgressSpinnable {
         self.stream <<< "Start..."
         self.stream <<< "\n"
 
-        queue.async { [unowned self] in
+        queue.async { [weak self] in
+            guard let self = self else {
+                return
+            }
             while self.isProgressing {
                 self.stream <<< self.spinner.frame
                 self.stream <<< "\n"
@@ -108,7 +111,10 @@ final class SimpleProgressSpinner: ProgressSpinnable {
             isClear = false
         }
 
-        queue.async { [unowned self] in
+        queue.async { [weak self] in
+            guard let self = self else {
+                return
+            }
             while self.isProgressing {
                 self.stream <<< self.spinner.frame
                 self.stream <<< "\n"
@@ -155,15 +161,18 @@ final class ProgressSpinner: ProgressSpinnable {
         isProgressing = true
 
         queue.async { [weak self] in
-            while self?.isProgressing ?? false {
-                self?.term.clearLine()
-                self?.term.write(self?.header ?? "", inColor: .green, bold: true)
-                self?.term.write(self?.spinner.frame ?? "", inColor: .green)
-                self?.term.endLine()
+            guard let self = self else {
+                return
+            }
+            while self.isProgressing {
+                self.term.clearLine()
+                self.term.write(self.header, inColor: .green, bold: true)
+                self.term.write(self.spinner.frame, inColor: .green)
+                self.term.endLine()
 
-                self?.term.moveCursor(up: 1)
+                self.term.moveCursor(up: 1)
 
-                usleep(self?.sleepInterval ?? 0)
+                usleep(self.sleepInterval)
             }
         }
 
@@ -181,9 +190,10 @@ final class ProgressSpinner: ProgressSpinnable {
 }
 
 /// Creates colored or simple progress spinner based on the provided output stream.
-public func createProgressSpinner(forStream stream: OutputByteStream, header: String, isShowStopped: Bool = true, spinner: Spinner = Spinner(kind: .box1)) -> ProgressSpinnable {
-    guard let stdStream = stream as? LocalFileOutputByteStream else {
-        return SimpleProgressSpinner(stream: stream, header: header, isShowStopped: isShowStopped, spinner: spinner)
+public func createProgressSpinner(forStream stderrStream: ThreadSafeOutputByteStream, header: String, isShowStopped: Bool = true, spinner: Spinner = Spinner(kind: .box1)) -> ProgressSpinnable {
+
+    guard let stdStream = stderrStream.stream as? LocalFileOutputByteStream else {
+        return SimpleProgressSpinner(stream: stderrStream.stream, header: header, isShowStopped: isShowStopped, spinner: spinner)
     }
 
     // If we have a terminal, use animated progress spinener.
@@ -193,9 +203,9 @@ public func createProgressSpinner(forStream stream: OutputByteStream, header: St
 
     // If the terminal is dumb, use single line progress spinner.
     if TerminalController.terminalType(stdStream) == .dumb {
-        return SingleLineProgressSpinnar(stream: stream, header: header, isShowStopped: isShowStopped, spinner: spinner)
+        return SingleLineProgressSpinnar(stream: stderrStream.stream, header: header, isShowStopped: isShowStopped, spinner: spinner)
     }
 
     // Use simple progress spinner by default.
-    return SimpleProgressSpinner(stream: stream, header: header, isShowStopped: isShowStopped, spinner: spinner)
+    return SimpleProgressSpinner(stream: stderrStream.stream, header: header, isShowStopped: isShowStopped, spinner: spinner)
 }
