@@ -23,7 +23,8 @@ final class ProgressSpinnerTests: XCTestCase {
         let outStream = BufferedOutputByteStream()
         let spinner = Spinner(kind: Spinner.Kind.allCases.randomElement()!)
         let isShowStopped = Bool.random()
-        let progressSpinner = ProgressSpinnerKit.createProgressSpinner(forStream: outStream, header: "test", isShowStopped: isShowStopped, spinner: spinner)
+        let headerText = "test"
+        let progressSpinner = ProgressSpinnerKit.createProgressSpinner(forStream: outStream, header: headerText, isShowStopped: isShowStopped, spinner: spinner)
         XCTAssertTrue(progressSpinner is SimpleProgressSpinner)
 
         let second = arc4random_uniform(10)
@@ -33,10 +34,10 @@ final class ProgressSpinnerTests: XCTestCase {
         let frameCount = Int(ceil(Double(duration) / Double(fps * 100)))
         var verificationSpinner = spinner
         let verificationSuffix = isShowStopped ? "Stop\n" : ""
-        let verificationFrames = (0..<frameCount).reduce(into: "test\n") { result, _ in
+        let verificationFrames = (0..<frameCount).reduce(into: "\(headerText)\n") { result, _ in
             result += "\(verificationSpinner.frame)\n"
         } + verificationSuffix
-        XCTAssertEqual(outStream.bytes.asString, verificationFrames)
+        XCTAssertEqual(outStream.bytes.validDescription, verificationFrames)
     }
 
     /// Test progress bar when writing a tty stream.
@@ -47,7 +48,8 @@ final class ProgressSpinnerTests: XCTestCase {
         }
         let spinner = Spinner(kind: Spinner.Kind.allCases.randomElement()!)
         let isShowStopped = Bool.random()
-        let progressSpinner = ProgressSpinnerKit.createProgressSpinner(forStream: pty.outStream, header: "TestHeader", isShowStopped: isShowStopped, spinner: spinner)
+        let headerText = "TestHeader"
+        let progressSpinner = ProgressSpinnerKit.createProgressSpinner(forStream: pty.outStream, header: headerText, isShowStopped: isShowStopped, spinner: spinner)
         XCTAssertTrue(progressSpinner is ProgressSpinner)
 
         var output = ""
@@ -65,7 +67,7 @@ final class ProgressSpinnerTests: XCTestCase {
         thread.join()
         pty.closeMaster()
 
-        let chuzzledOutput = output.chuzzle()!
+        let chuzzledOutput = output.spm_chuzzle()!
         let prefix = "\u{1B}[2K"
         XCTAssertTrue(chuzzledOutput.hasPrefix(prefix))
         let suffix = isShowStopped ? "\u{1B}[32m\u{1B}[1mStop\u{1B}[0m" : ""
@@ -77,7 +79,7 @@ final class ProgressSpinnerTests: XCTestCase {
 
         var verificationSpinner = spinner
         let verificationFrames = (0..<outputFrames.count).map { _ in
-            return "\u{1B}[32m\u{1B}[1mTestHeader\u{1B}[0m\u{1B}[32m\(verificationSpinner.frame)\u{1B}[0m"
+            return "\u{1B}[32m\u{1B}[1m\(headerText)\u{1B}[0m\u{1B}[32m\(verificationSpinner.frame)\u{1B}[0m"
         }
         XCTAssertEqual(outputFrames, verificationFrames)
 
