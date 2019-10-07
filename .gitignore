@@ -1,4 +1,8 @@
+.build
+/.previous-build
+xcuserdata
 .DS_Store
-/.build
-/Packages
-/*.xcodeproj
+*.xcodeproj
+.swiftpm
+Package.resolved
+
