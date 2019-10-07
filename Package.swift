@@ -9,7 +9,7 @@ let package = Package(
         .library(name: "ProgressSpinnerKit", targets: ["ProgressSpinnerKit"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/apple/swift-package-manager.git", .revision("swift-5.0.1-RELEASE")),
+        .package(url: "https://github.com/apple/swift-package-manager.git", from: "0.5.0"),
     ],
     targets: [
         .target(name: "ProgressSpinnerKit", dependencies: ["SPMUtility"]),
