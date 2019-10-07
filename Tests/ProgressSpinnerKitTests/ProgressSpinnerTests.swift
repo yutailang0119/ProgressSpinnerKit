@@ -20,7 +20,8 @@ final class ProgressSpinnerTests: XCTestCase {
 
     /// Test progress bar when writing to a non tty stream.
     func testSimpleProgresSpinner() {
-        let outStream = BufferedOutputByteStream()
+        let byteStream = BufferedOutputByteStream()
+        let outStream = ThreadSafeOutputByteStream(byteStream)
         let spinner = Spinner(kind: Spinner.Kind.allCases.randomElement()!)
         let isShowStopped = Bool.random()
         let headerText = "test"
@@ -37,7 +38,7 @@ final class ProgressSpinnerTests: XCTestCase {
         let verificationFrames = (0..<frameCount).reduce(into: "\(headerText)\n") { result, _ in
             result += "\(verificationSpinner.frame)\n"
         } + verificationSuffix
-        XCTAssertEqual(outStream.bytes.validDescription, verificationFrames)
+        XCTAssertEqual(byteStream.bytes.validDescription, verificationFrames)
     }
 
     /// Test progress bar when writing a tty stream.
@@ -46,10 +47,11 @@ final class ProgressSpinnerTests: XCTestCase {
             XCTFail("Couldn't create pseudo terminal.")
             return
         }
+        let outStream = ThreadSafeOutputByteStream(pty.outStream)
         let spinner = Spinner(kind: Spinner.Kind.allCases.randomElement()!)
         let isShowStopped = Bool.random()
         let headerText = "TestHeader"
-        let progressSpinner = ProgressSpinnerKit.createProgressSpinner(forStream: pty.outStream, header: headerText, isShowStopped: isShowStopped, spinner: spinner)
+        let progressSpinner = ProgressSpinnerKit.createProgressSpinner(forStream: outStream, header: headerText, isShowStopped: isShowStopped, spinner: spinner)
         XCTAssertTrue(progressSpinner is ProgressSpinner)
 
         var output = ""
