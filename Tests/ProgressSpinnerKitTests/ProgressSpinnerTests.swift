@@ -6,12 +6,12 @@
 //
 
 import XCTest
-import SPMLibc
+import TSCLibc
 import Foundation
-@testable import Basic
+@testable import TSCBasic
 @testable import ProgressSpinnerKit
 
-typealias Thread = Basic.Thread
+typealias Thread = TSCBasic.Thread
 
 final class ProgressSpinnerTests: XCTestCase {
 
@@ -128,11 +128,11 @@ private final class PseudoTerminal {
     }
 
     func closeSlave() {
-        _ = SPMLibc.close(slave)
+        _ = TSCLibc.close(slave)
     }
 
     func closeMaster() {
-        _ = SPMLibc.close(master)
+        _ = TSCLibc.close(master)
     }
 
     func close() {

@@ -6,8 +6,8 @@
 //
 
 import Foundation
-import Basic
-import SPMUtility
+import TSCBasic
+import TSCUtility
 
 private var fps: useconds_t {
     let fps: Double = 1 / 60
