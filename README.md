@@ -5,7 +5,7 @@
 </p>
 
 <p align="center"> 
-<img src="./ProgressSpinnerKit.gif">
+<img src="./Documentation/ProgressSpinnerKit.gif">
 </p>
 
 A library to display an ActivityIndicator for CLI.  
@@ -20,7 +20,7 @@ ProgressSpinnerKit is still in active development.
 
 ## Dome
 
-![](./Sources/Demo/Demo.gif)
+![](./Documentation/Demo.gif)
 
 ## Installation
 
