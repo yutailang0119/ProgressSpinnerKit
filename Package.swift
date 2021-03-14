@@ -9,11 +9,17 @@ let package = Package(
         .library(name: "ProgressSpinnerKit", targets: ["ProgressSpinnerKit"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/apple/swift-package-manager.git", from: "0.5.0"),
+        .package(url: "https://github.com/apple/swift-tools-support-core", from: "0.2.0"),
     ],
     targets: [
-        .target(name: "ProgressSpinnerKit", dependencies: ["SPMUtility"]),
-        .testTarget(name: "ProgressSpinnerKitTests", dependencies: ["ProgressSpinnerKit"]),
-        .target(name: "Demo", dependencies: ["ProgressSpinnerKit"]),
+        .target(name: "ProgressSpinnerKit",
+                dependencies: [
+                    .product(name: "SwiftToolsSupport",
+                             package: "swift-tools-support-core"),
+                ]),
+        .testTarget(name: "ProgressSpinnerKitTests",
+                    dependencies: ["ProgressSpinnerKit"]),
+        .target(name: "Demo",
+                dependencies: ["ProgressSpinnerKit"]),
     ]
 )
