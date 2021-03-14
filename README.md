@@ -33,12 +33,12 @@ ProgressSpinnerKit is still in active development.
 import PackageDescription
 
 let package = Package(
-    name: "test",
+    name: "DemoPackage",
     dependencies: [
-        .package(url: "https://github.com/yutailang0119/ProgressSpinnerKit", from: "0.3.0"),
+        .package(url: "https://github.com/yutailang0119/ProgressSpinnerKit", from: "0.4.0"),
     ],
     targets: [
-        .target(name: "targetName", dependencies: ["ProgressSpinnerKit"]),
+        .target(name: "DemoTarget", dependencies: ["ProgressSpinnerKit"]),
     ]
 )
 
@@ -49,10 +49,10 @@ https://github.com/apple/swift-package-manager
 ## Usege
 
 ```swift
-import Basic
+import TSCBasic
 import ProgressSpinnerKit
 
-let spinner = createProgressSpinner(forStream: Basic.stdoutStream, header: " Loading:")
+let spinner = createProgressSpinner(forStream: TSCBasic.stdoutStream, header: " Loading:")
 spinner.start()
 // Something on the main thread.
 spinner.stop()
