@@ -6,12 +6,12 @@
 //
 
 import XCTest
-import SPMLibc
+import TSCLibc
 import Foundation
-@testable import Basic
+@testable import TSCBasic
 @testable import ProgressSpinnerKit
 
-typealias Thread = Basic.Thread
+typealias Thread = TSCBasic.Thread
 
 final class ProgressSpinnerTests: XCTestCase {
 
@@ -28,7 +28,7 @@ final class ProgressSpinnerTests: XCTestCase {
         let progressSpinner = ProgressSpinnerKit.createProgressSpinner(forStream: outStream, header: headerText, isShowStopped: isShowStopped, spinner: spinner)
         XCTAssertTrue(progressSpinner is SimpleProgressSpinner)
 
-        let second = arc4random_uniform(10)
+        let second = Int.random(in: 0..<10)
         let duration = useconds_t(Double(second) * pow(1000, 2))
         runProgressSpinner(progressSpinner, withDuration: duration)
 
@@ -61,7 +61,7 @@ final class ProgressSpinnerTests: XCTestCase {
             }
         }
         thread.start()
-        let second = arc4random_uniform(10)
+        let second = Int.random(in: 0..<10)
         let duration: useconds_t = useconds_t(Double(second) * pow(1000, 2))
         runProgressSpinner(progressSpinner, withDuration: duration)
         pty.closeSlave()
@@ -128,11 +128,11 @@ private final class PseudoTerminal {
     }
 
     func closeSlave() {
-        _ = SPMLibc.close(slave)
+        _ = TSCLibc.close(slave)
     }
 
     func closeMaster() {
-        _ = SPMLibc.close(master)
+        _ = TSCLibc.close(master)
     }
 
     func close() {
