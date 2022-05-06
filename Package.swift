@@ -19,7 +19,7 @@ let package = Package(
                 ]),
         .testTarget(name: "ProgressSpinnerKitTests",
                     dependencies: ["ProgressSpinnerKit"]),
-        .target(name: "Demo",
-                dependencies: ["ProgressSpinnerKit"]),
+        .executableTarget(name: "Demo",
+                          dependencies: ["ProgressSpinnerKit"]),
     ]
 )
