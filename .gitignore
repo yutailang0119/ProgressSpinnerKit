@@ -1,8 +1,9 @@
-.build
-/.previous-build
-xcuserdata
 .DS_Store
-*.xcodeproj
-.swiftpm
-Package.resolved
-
+/.build
+/Packages
+/*.xcodeproj
+xcuserdata/
+DerivedData/
+.swiftpm/config/registries.json
+.swiftpm/xcode/package.xcworkspace/contents.xcworkspacedata
+.netrc
