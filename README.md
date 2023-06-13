@@ -1,5 +1,5 @@
 <p align="left">
-  <a href="https://developer.apple.com/swift"><img alt="Swift 5.3" src="https://img.shields.io/badge/Swift-5.3-orange.svg?style=flat"/></a>
+  <a href="https://developer.apple.com/swift"><img alt="Swift 5.8" src="https://img.shields.io/badge/Swift-5.8-orange.svg?style=flat"/></a>
   <a href="https://swift.org/package-manager/"><img alt="Swift Package Manager" src="https://img.shields.io/badge/Swift_Package_Manager-compatible-green.svg?style=flat"/></a>
   <a href="https://github.com/yutailang0119/ProgressSpinnerKit/blob/main/LICENSE"><img alt="Lincense" src="https://img.shields.io/badge/license-MIT-black.svg?style=flat"/></a>
 </p>
@@ -27,7 +27,7 @@ ProgressSpinnerKit is still in active development.
 ### [Swift Package Manager](https://swift.org/package-manager/)
 
 ```swift
-// swift-tools-version:5.3
+// swift-tools-version:5.8
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
