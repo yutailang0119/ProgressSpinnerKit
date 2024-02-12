@@ -47,22 +47,22 @@ final class SingleLineProgressSpinnar: ProgressSpinnable {
         isProgressing = true
 
         if isClear {
-            stream <<< header
-            stream <<< "\n"
+            stream.send(header)
+            stream.send("\n")
             stream.flush()
             isClear = false
         }
 
-        self.stream <<< "Start..."
-        self.stream <<< "\n"
+        self.stream.send("Start...")
+        self.stream.send("\n")
 
         queue.async { [weak self] in
             guard let self = self else {
                 return
             }
             while self.isProgressing {
-                self.stream <<< self.spinner.frame
-                self.stream <<< "\n"
+                self.stream.send(self.spinner.frame)
+                self.stream.send("\n")
                 self.stream.flush()
 
                 usleep(self.sleepInterval)
@@ -73,7 +73,7 @@ final class SingleLineProgressSpinnar: ProgressSpinnable {
     func stop() {
         isProgressing = false
         if isShowStopped {
-            stream <<< "Stop"
+            stream.send("Stop")
             stream.flush()
         }
     }
@@ -105,8 +105,8 @@ final class SimpleProgressSpinner: ProgressSpinnable {
         isProgressing = true
 
         if isClear {
-            stream <<< header
-            stream <<< "\n"
+            stream.send(header)
+            stream.send("\n")
             stream.flush()
             isClear = false
         }
@@ -116,8 +116,8 @@ final class SimpleProgressSpinner: ProgressSpinnable {
                 return
             }
             while self.isProgressing {
-                self.stream <<< self.spinner.frame
-                self.stream <<< "\n"
+                self.stream.send(self.spinner.frame)
+                self.stream.send("\n")
                 self.stream.flush()
 
                 usleep(self.sleepInterval)
@@ -129,8 +129,8 @@ final class SimpleProgressSpinner: ProgressSpinnable {
     func stop() {
         isProgressing = false
         if isShowStopped {
-            self.stream <<< "Stop"
-            self.stream <<< "\n"
+            self.stream.send("Stop")
+            self.stream.send("\n")
             self.stream.flush()
         }
     }
