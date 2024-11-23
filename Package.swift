@@ -12,7 +12,7 @@ let package = Package(
         .library(name: "ProgressSpinnerKit", targets: ["ProgressSpinnerKit"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/apple/swift-tools-support-core", from: "0.6.0"),
+        .package(url: "https://github.com/apple/swift-tools-support-core", from: "0.7.0"),
     ],
     targets: [
         .target(name: "ProgressSpinnerKit",
