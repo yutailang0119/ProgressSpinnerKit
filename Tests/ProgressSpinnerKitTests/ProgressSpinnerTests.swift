@@ -26,12 +26,10 @@ final class ProgressSpinnerTests: XCTestCase {
     let byteStream = BufferedOutputByteStream()
     let outStream = ThreadSafeOutputByteStream(byteStream)
     let spinner = Spinner(kind: Spinner.Kind.allCases.randomElement()!)
-    let isShowStopped = Bool.random()
     let headerText = "test"
     let progressSpinner = ProgressSpinnerKit.progressSpinner(
       for: outStream,
       header: headerText,
-      isShowStopped: isShowStopped,
       spinner: spinner
     )
     XCTAssertTrue(progressSpinner is SimpleProgressSpinner)
@@ -42,11 +40,10 @@ final class ProgressSpinnerTests: XCTestCase {
 
     let frameCount = Int(ceil(Double(duration) / Double(fps * 100)))
     var verificationSpinner = spinner
-    let verificationSuffix = isShowStopped ? "Stop\n" : ""
-    let verificationFrames =
-      (0..<frameCount).reduce(into: "\(headerText)\n") { result, _ in
+    let verificationFrames = (0..<frameCount)
+      .reduce(into: "\(headerText)\n") { result, _ in
         result += "\(verificationSpinner.frame)\n"
-      } + verificationSuffix
+      }
     XCTAssertEqual(byteStream.bytes.validDescription, verificationFrames)
   }
 
