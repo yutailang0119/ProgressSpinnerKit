@@ -35,13 +35,12 @@ import PackageDescription
 let package = Package(
     name: "DemoPackage",
     dependencies: [
-        .package(url: "https://github.com/yutailang0119/ProgressSpinnerKit", from: "0.4.0"),
+        .package(url: "https://github.com/yutailang0119/ProgressSpinnerKit", from: "0.5.0"),
     ],
     targets: [
         .target(name: "DemoTarget", dependencies: ["ProgressSpinnerKit"]),
     ]
 )
-
 ```
 
 https://github.com/apple/swift-package-manager  
