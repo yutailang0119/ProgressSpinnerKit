@@ -51,9 +51,6 @@ final class SingleLineProgressSpinnar: ProgressSpinnable {
       isClear = false
     }
 
-    self.stream.send("Start...")
-    self.stream.send("\n")
-
     queue.async { [weak self] in
       guard let self = self else {
         return
