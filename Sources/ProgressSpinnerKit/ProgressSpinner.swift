@@ -127,17 +127,15 @@ final class SimpleProgressSpinner: ProgressSpinnable {
 final class ProgressSpinner: ProgressSpinnable {
   private let term: TerminalController
   private let header: String
-  private let isShowStopped: Bool
   private var spinner: Spinner
   private var isProgressing: Bool
 
   private let queue: DispatchQueue
   private let sleepInterval: useconds_t
 
-  init(term: TerminalController, header: String, isShowStopped: Bool, spinner: Spinner) {
+  init(term: TerminalController, header: String, spinner: Spinner) {
     self.term = term
     self.header = header
-    self.isShowStopped = isShowStopped
     self.spinner = spinner
     self.isProgressing = false
     self.queue = DispatchQueue(label: "progressSpinnerQueue", qos: .background)
@@ -168,9 +166,6 @@ final class ProgressSpinner: ProgressSpinnable {
   func stop() {
     isProgressing = false
     term.clearLine()
-    if isShowStopped {
-      term.write("Stop", inColor: .green, bold: true)
-    }
     term.endLine()
   }
 
@@ -194,7 +189,7 @@ public func progressSpinner(
 
   // If we have a terminal, use animated progress spinener.
   if let term = TerminalController(stream: stdStream) {
-    return ProgressSpinner(term: term, header: header, isShowStopped: isShowStopped, spinner: spinner)
+    return ProgressSpinner(term: term, header: header, spinner: spinner)
   }
 
   // If the terminal is dumb, use single line progress spinner.
