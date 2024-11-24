@@ -23,7 +23,6 @@ public protocol ProgressSpinnable {
 final class SingleLineProgressSpinnar: ProgressSpinnable {
   private let stream: OutputByteStream
   private let header: String
-  private let isShowStopped: Bool
   private var spinner: Spinner
   private var isProgressing: Bool
   private var isClear: Bool  // true if haven't drawn anything yet.
@@ -32,10 +31,9 @@ final class SingleLineProgressSpinnar: ProgressSpinnable {
   private let queue: DispatchQueue
   private let sleepInterval: useconds_t
 
-  init(stream: OutputByteStream, header: String, isShowStopped: Bool, spinner: Spinner) {
+  init(stream: OutputByteStream, header: String, spinner: Spinner) {
     self.stream = stream
     self.header = header
-    self.isShowStopped = isShowStopped
     self.spinner = spinner
     self.isProgressing = false
     self.isClear = true
@@ -72,17 +70,12 @@ final class SingleLineProgressSpinnar: ProgressSpinnable {
 
   func stop() {
     isProgressing = false
-    if isShowStopped {
-      stream.send("Stop")
-      stream.flush()
-    }
   }
 }
 
 final class SimpleProgressSpinner: ProgressSpinnable {
   private let stream: OutputByteStream
   private let header: String
-  private let isShowStopped: Bool
   private var spinner: Spinner
   private var isProgressing: Bool
   private var isClear: Bool  // true if haven't drawn anything yet.
@@ -90,10 +83,9 @@ final class SimpleProgressSpinner: ProgressSpinnable {
   private let queue: DispatchQueue
   private let sleepInterval: useconds_t
 
-  init(stream: OutputByteStream, header: String, isShowStopped: Bool, spinner: Spinner) {
+  init(stream: OutputByteStream, header: String, spinner: Spinner) {
     self.stream = stream
     self.header = header
-    self.isShowStopped = isShowStopped
     self.spinner = spinner
     self.isProgressing = false
     self.isClear = true
@@ -128,11 +120,6 @@ final class SimpleProgressSpinner: ProgressSpinnable {
 
   func stop() {
     isProgressing = false
-    if isShowStopped {
-      self.stream.send("Stop")
-      self.stream.send("\n")
-      self.stream.flush()
-    }
   }
 
 }
@@ -140,17 +127,15 @@ final class SimpleProgressSpinner: ProgressSpinnable {
 final class ProgressSpinner: ProgressSpinnable {
   private let term: TerminalController
   private let header: String
-  private let isShowStopped: Bool
   private var spinner: Spinner
   private var isProgressing: Bool
 
   private let queue: DispatchQueue
   private let sleepInterval: useconds_t
 
-  init(term: TerminalController, header: String, isShowStopped: Bool, spinner: Spinner) {
+  init(term: TerminalController, header: String, spinner: Spinner) {
     self.term = term
     self.header = header
-    self.isShowStopped = isShowStopped
     self.spinner = spinner
     self.isProgressing = false
     self.queue = DispatchQueue(label: "progressSpinnerQueue", qos: .background)
@@ -181,9 +166,6 @@ final class ProgressSpinner: ProgressSpinnable {
   func stop() {
     isProgressing = false
     term.clearLine()
-    if isShowStopped {
-      term.write("Stop", inColor: .green, bold: true)
-    }
     term.endLine()
   }
 
@@ -193,7 +175,6 @@ final class ProgressSpinner: ProgressSpinnable {
 public func progressSpinner(
   for stderrStream: ThreadSafeOutputByteStream,
   header: String,
-  isShowStopped: Bool = true,
   spinner: Spinner = Spinner(kind: .box1)
 ) -> ProgressSpinnable {
 
@@ -201,14 +182,13 @@ public func progressSpinner(
     return SimpleProgressSpinner(
       stream: stderrStream.stream,
       header: header,
-      isShowStopped: isShowStopped,
       spinner: spinner
     )
   }
 
   // If we have a terminal, use animated progress spinener.
   if let term = TerminalController(stream: stdStream) {
-    return ProgressSpinner(term: term, header: header, isShowStopped: isShowStopped, spinner: spinner)
+    return ProgressSpinner(term: term, header: header, spinner: spinner)
   }
 
   // If the terminal is dumb, use single line progress spinner.
@@ -216,7 +196,6 @@ public func progressSpinner(
     return SingleLineProgressSpinnar(
       stream: stderrStream.stream,
       header: header,
-      isShowStopped: isShowStopped,
       spinner: spinner
     )
   }
@@ -225,7 +204,6 @@ public func progressSpinner(
   return SimpleProgressSpinner(
     stream: stderrStream.stream,
     header: header,
-    isShowStopped: isShowStopped,
     spinner: spinner
   )
 }
