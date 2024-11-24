@@ -8,8 +8,8 @@ struct Demo {
     let duration = useconds_t(Double(2.0) * pow(1000, 2))
 
     do {
-      let defaultSpinner = ProgressSpinnerKit.createProgressSpinner(
-        forStream: TSCBasic.stderrStream,
+      let defaultSpinner = ProgressSpinnerKit.progressSpinner(
+        for: TSCBasic.stderrStream,
         header: " default:"
       )
       defaultSpinner.start()
@@ -18,8 +18,8 @@ struct Demo {
     }
 
     do {
-      let box1 = ProgressSpinnerKit.createProgressSpinner(
-        forStream: TSCBasic.stderrStream,
+      let box1 = ProgressSpinnerKit.progressSpinner(
+        for: TSCBasic.stderrStream,
         header: " box1:",
         spinner: Spinner(kind: .box1)
       )
@@ -29,8 +29,8 @@ struct Demo {
     }
 
     do {
-      let box2 = ProgressSpinnerKit.createProgressSpinner(
-        forStream: TSCBasic.stderrStream,
+      let box2 = ProgressSpinnerKit.progressSpinner(
+        for: TSCBasic.stderrStream,
         header: " box2:",
         spinner: Spinner(kind: .box2)
       )
@@ -40,8 +40,8 @@ struct Demo {
     }
 
     do {
-      let box3 = ProgressSpinnerKit.createProgressSpinner(
-        forStream: TSCBasic.stderrStream,
+      let box3 = ProgressSpinnerKit.progressSpinner(
+        for: TSCBasic.stderrStream,
         header: " box3:",
         spinner: Spinner(kind: .box3)
       )
@@ -51,8 +51,8 @@ struct Demo {
     }
 
     do {
-      let box4 = ProgressSpinnerKit.createProgressSpinner(
-        forStream: TSCBasic.stderrStream,
+      let box4 = ProgressSpinnerKit.progressSpinner(
+        for: TSCBasic.stderrStream,
         header: " box4:",
         spinner: Spinner(kind: .box4)
       )
@@ -62,8 +62,8 @@ struct Demo {
     }
 
     do {
-      let box5 = ProgressSpinnerKit.createProgressSpinner(
-        forStream: TSCBasic.stderrStream,
+      let box5 = ProgressSpinnerKit.progressSpinner(
+        for: TSCBasic.stderrStream,
         header: " box5:",
         spinner: Spinner(kind: .box5)
       )
@@ -73,8 +73,8 @@ struct Demo {
     }
 
     do {
-      let box6 = ProgressSpinnerKit.createProgressSpinner(
-        forStream: TSCBasic.stderrStream,
+      let box6 = ProgressSpinnerKit.progressSpinner(
+        for: TSCBasic.stderrStream,
         header: " box6:",
         spinner: Spinner(kind: .box6)
       )
@@ -84,8 +84,8 @@ struct Demo {
     }
 
     do {
-      let box7 = ProgressSpinnerKit.createProgressSpinner(
-        forStream: TSCBasic.stderrStream,
+      let box7 = ProgressSpinnerKit.progressSpinner(
+        for: TSCBasic.stderrStream,
         header: " box7:",
         spinner: Spinner(kind: .box7)
       )
@@ -95,8 +95,8 @@ struct Demo {
     }
 
     do {
-      let bar1 = ProgressSpinnerKit.createProgressSpinner(
-        forStream: TSCBasic.stderrStream,
+      let bar1 = ProgressSpinnerKit.progressSpinner(
+        for: TSCBasic.stderrStream,
         header: " bar1:",
         spinner: Spinner(kind: .bar1)
       )
@@ -106,8 +106,8 @@ struct Demo {
     }
 
     do {
-      let bar2 = ProgressSpinnerKit.createProgressSpinner(
-        forStream: TSCBasic.stderrStream,
+      let bar2 = ProgressSpinnerKit.progressSpinner(
+        for: TSCBasic.stderrStream,
         header: " bar2:",
         spinner: Spinner(kind: .bar2)
       )
@@ -117,8 +117,8 @@ struct Demo {
     }
 
     do {
-      let bar3 = ProgressSpinnerKit.createProgressSpinner(
-        forStream: TSCBasic.stderrStream,
+      let bar3 = ProgressSpinnerKit.progressSpinner(
+        for: TSCBasic.stderrStream,
         header: " bar3:",
         spinner: Spinner(kind: .bar3)
       )
@@ -128,8 +128,8 @@ struct Demo {
     }
 
     do {
-      let bar4 = ProgressSpinnerKit.createProgressSpinner(
-        forStream: TSCBasic.stderrStream,
+      let bar4 = ProgressSpinnerKit.progressSpinner(
+        for: TSCBasic.stderrStream,
         header: " bar4:",
         spinner: Spinner(kind: .bar4)
       )
@@ -139,8 +139,8 @@ struct Demo {
     }
 
     do {
-      let bar5 = ProgressSpinnerKit.createProgressSpinner(
-        forStream: TSCBasic.stderrStream,
+      let bar5 = ProgressSpinnerKit.progressSpinner(
+        for: TSCBasic.stderrStream,
         header: " bar5:",
         spinner: Spinner(kind: .bar5)
       )
@@ -150,8 +150,8 @@ struct Demo {
     }
 
     do {
-      let bar6 = ProgressSpinnerKit.createProgressSpinner(
-        forStream: TSCBasic.stderrStream,
+      let bar6 = ProgressSpinnerKit.progressSpinner(
+        for: TSCBasic.stderrStream,
         header: " bar6:",
         spinner: Spinner(kind: .bar6)
       )
@@ -161,8 +161,8 @@ struct Demo {
     }
 
     do {
-      let spin1 = ProgressSpinnerKit.createProgressSpinner(
-        forStream: TSCBasic.stderrStream,
+      let spin1 = ProgressSpinnerKit.progressSpinner(
+        for: TSCBasic.stderrStream,
         header: " spin1:",
         spinner: Spinner(kind: .spin1)
       )
@@ -172,8 +172,8 @@ struct Demo {
     }
 
     do {
-      let spin2 = ProgressSpinnerKit.createProgressSpinner(
-        forStream: TSCBasic.stderrStream,
+      let spin2 = ProgressSpinnerKit.progressSpinner(
+        for: TSCBasic.stderrStream,
         header: " spin2:",
         spinner: Spinner(kind: .spin2)
       )
@@ -183,8 +183,8 @@ struct Demo {
     }
 
     do {
-      let spin3 = ProgressSpinnerKit.createProgressSpinner(
-        forStream: TSCBasic.stderrStream,
+      let spin3 = ProgressSpinnerKit.progressSpinner(
+        for: TSCBasic.stderrStream,
         header: " spin3:",
         spinner: Spinner(kind: .spin3)
       )
@@ -194,8 +194,8 @@ struct Demo {
     }
 
     do {
-      let spin4 = ProgressSpinnerKit.createProgressSpinner(
-        forStream: TSCBasic.stderrStream,
+      let spin4 = ProgressSpinnerKit.progressSpinner(
+        for: TSCBasic.stderrStream,
         header: " spin4:",
         spinner: Spinner(kind: .spin4)
       )
@@ -205,8 +205,8 @@ struct Demo {
     }
 
     do {
-      let spin5 = ProgressSpinnerKit.createProgressSpinner(
-        forStream: TSCBasic.stderrStream,
+      let spin5 = ProgressSpinnerKit.progressSpinner(
+        for: TSCBasic.stderrStream,
         header: " spin5:",
         spinner: Spinner(kind: .spin5)
       )
@@ -216,8 +216,8 @@ struct Demo {
     }
 
     do {
-      let spin6 = ProgressSpinnerKit.createProgressSpinner(
-        forStream: TSCBasic.stderrStream,
+      let spin6 = ProgressSpinnerKit.progressSpinner(
+        for: TSCBasic.stderrStream,
         header: " spin6:",
         spinner: Spinner(kind: .spin6)
       )
@@ -227,8 +227,8 @@ struct Demo {
     }
 
     do {
-      let spin7 = ProgressSpinnerKit.createProgressSpinner(
-        forStream: TSCBasic.stderrStream,
+      let spin7 = ProgressSpinnerKit.progressSpinner(
+        for: TSCBasic.stderrStream,
         header: " spin7:",
         spinner: Spinner(kind: .spin7)
       )
@@ -238,8 +238,8 @@ struct Demo {
     }
 
     do {
-      let spin8 = ProgressSpinnerKit.createProgressSpinner(
-        forStream: TSCBasic.stderrStream,
+      let spin8 = ProgressSpinnerKit.progressSpinner(
+        for: TSCBasic.stderrStream,
         header: " spin8:",
         spinner: Spinner(kind: .spin8)
       )
@@ -249,8 +249,8 @@ struct Demo {
     }
 
     do {
-      let spin9 = ProgressSpinnerKit.createProgressSpinner(
-        forStream: TSCBasic.stderrStream,
+      let spin9 = ProgressSpinnerKit.progressSpinner(
+        for: TSCBasic.stderrStream,
         header: " spin9:",
         spinner: Spinner(kind: .spin9)
       )
@@ -260,8 +260,8 @@ struct Demo {
     }
 
     do {
-      let spin10 = ProgressSpinnerKit.createProgressSpinner(
-        forStream: TSCBasic.stderrStream,
+      let spin10 = ProgressSpinnerKit.progressSpinner(
+        for: TSCBasic.stderrStream,
         header: " spin10:",
         spinner: Spinner(kind: .spin10)
       )
@@ -271,8 +271,8 @@ struct Demo {
     }
 
     do {
-      let spin11 = ProgressSpinnerKit.createProgressSpinner(
-        forStream: TSCBasic.stderrStream,
+      let spin11 = ProgressSpinnerKit.progressSpinner(
+        for: TSCBasic.stderrStream,
         header: " spin11:",
         spinner: Spinner(kind: .spin11)
       )
@@ -282,8 +282,8 @@ struct Demo {
     }
 
     do {
-      let spin12 = ProgressSpinnerKit.createProgressSpinner(
-        forStream: TSCBasic.stderrStream,
+      let spin12 = ProgressSpinnerKit.progressSpinner(
+        for: TSCBasic.stderrStream,
         header: " spin12:",
         spinner: Spinner(kind: .spin12)
       )
@@ -293,8 +293,8 @@ struct Demo {
     }
 
     do {
-      let spin13 = ProgressSpinnerKit.createProgressSpinner(
-        forStream: TSCBasic.stderrStream,
+      let spin13 = ProgressSpinnerKit.progressSpinner(
+        for: TSCBasic.stderrStream,
         header: " spin13:",
         spinner: Spinner(kind: .spin13)
       )
@@ -304,8 +304,8 @@ struct Demo {
     }
 
     do {
-      let spin14 = ProgressSpinnerKit.createProgressSpinner(
-        forStream: TSCBasic.stderrStream,
+      let spin14 = ProgressSpinnerKit.progressSpinner(
+        for: TSCBasic.stderrStream,
         header: " spin14:",
         spinner: Spinner(kind: .spin14)
       )

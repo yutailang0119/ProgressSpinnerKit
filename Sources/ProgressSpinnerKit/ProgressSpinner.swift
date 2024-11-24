@@ -190,8 +190,8 @@ final class ProgressSpinner: ProgressSpinnable {
 }
 
 /// Creates colored or simple progress spinner based on the provided output stream.
-public func createProgressSpinner(
-  forStream stderrStream: ThreadSafeOutputByteStream,
+public func progressSpinner(
+  for stderrStream: ThreadSafeOutputByteStream,
   header: String,
   isShowStopped: Bool = true,
   spinner: Spinner = Spinner(kind: .box1)
