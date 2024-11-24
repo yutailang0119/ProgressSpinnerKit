@@ -76,7 +76,6 @@ final class SingleLineProgressSpinnar: ProgressSpinnable {
 final class SimpleProgressSpinner: ProgressSpinnable {
   private let stream: OutputByteStream
   private let header: String
-  private let isShowStopped: Bool
   private var spinner: Spinner
   private var isProgressing: Bool
   private var isClear: Bool  // true if haven't drawn anything yet.
@@ -84,10 +83,9 @@ final class SimpleProgressSpinner: ProgressSpinnable {
   private let queue: DispatchQueue
   private let sleepInterval: useconds_t
 
-  init(stream: OutputByteStream, header: String, isShowStopped: Bool, spinner: Spinner) {
+  init(stream: OutputByteStream, header: String, spinner: Spinner) {
     self.stream = stream
     self.header = header
-    self.isShowStopped = isShowStopped
     self.spinner = spinner
     self.isProgressing = false
     self.isClear = true
@@ -122,11 +120,6 @@ final class SimpleProgressSpinner: ProgressSpinnable {
 
   func stop() {
     isProgressing = false
-    if isShowStopped {
-      self.stream.send("Stop")
-      self.stream.send("\n")
-      self.stream.flush()
-    }
   }
 
 }
@@ -195,7 +188,6 @@ public func progressSpinner(
     return SimpleProgressSpinner(
       stream: stderrStream.stream,
       header: header,
-      isShowStopped: isShowStopped,
       spinner: spinner
     )
   }
@@ -218,7 +210,6 @@ public func progressSpinner(
   return SimpleProgressSpinner(
     stream: stderrStream.stream,
     header: header,
-    isShowStopped: isShowStopped,
     spinner: spinner
   )
 }
