@@ -55,12 +55,10 @@ final class ProgressSpinnerTests: XCTestCase {
     }
     let outStream = ThreadSafeOutputByteStream(pty.outStream)
     let spinner = Spinner(kind: Spinner.Kind.allCases.randomElement()!)
-    let isShowStopped = Bool.random()
     let headerText = "TestHeader"
     let progressSpinner = ProgressSpinnerKit.progressSpinner(
       for: outStream,
       header: headerText,
-      isShowStopped: isShowStopped,
       spinner: spinner
     )
     XCTAssertTrue(progressSpinner is ProgressSpinner)
@@ -83,10 +81,8 @@ final class ProgressSpinnerTests: XCTestCase {
     let chuzzledOutput = output.spm_chuzzle()!
     let prefix = "\u{1B}[2K"
     XCTAssertTrue(chuzzledOutput.hasPrefix(prefix))
-    let suffix = isShowStopped ? "\u{1B}[32m\u{1B}[1mStop\u{1B}[0m" : ""
-    XCTAssertTrue(chuzzledOutput.hasSuffix(suffix))
 
-    let outputFrames = String(chuzzledOutput.dropFirst(prefix.utf8.count).dropLast(suffix.utf8.count))
+    let outputFrames = String(chuzzledOutput.dropFirst(prefix.utf8.count))
       .components(separatedBy: .newlines)
       .filter { !$0.isEmpty && $0 != "\u{1B}[2K" && $0 != "\u{1b}[1A\u{1b}[2K" }
 
