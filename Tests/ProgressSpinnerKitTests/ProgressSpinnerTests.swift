@@ -28,8 +28,8 @@ final class ProgressSpinnerTests: XCTestCase {
     let spinner = Spinner(kind: Spinner.Kind.allCases.randomElement()!)
     let isShowStopped = Bool.random()
     let headerText = "test"
-    let progressSpinner = ProgressSpinnerKit.createProgressSpinner(
-      forStream: outStream,
+    let progressSpinner = ProgressSpinnerKit.progressSpinner(
+      for: outStream,
       header: headerText,
       isShowStopped: isShowStopped,
       spinner: spinner
@@ -60,8 +60,8 @@ final class ProgressSpinnerTests: XCTestCase {
     let spinner = Spinner(kind: Spinner.Kind.allCases.randomElement()!)
     let isShowStopped = Bool.random()
     let headerText = "TestHeader"
-    let progressSpinner = ProgressSpinnerKit.createProgressSpinner(
-      forStream: outStream,
+    let progressSpinner = ProgressSpinnerKit.progressSpinner(
+      for: outStream,
       header: headerText,
       isShowStopped: isShowStopped,
       spinner: spinner
