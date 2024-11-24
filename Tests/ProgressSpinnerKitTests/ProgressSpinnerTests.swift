@@ -26,10 +26,10 @@ final class ProgressSpinnerTests: XCTestCase {
     let byteStream = BufferedOutputByteStream()
     let outStream = ThreadSafeOutputByteStream(byteStream)
     let spinner = Spinner(kind: Spinner.Kind.allCases.randomElement()!)
-    let headerText = "test"
+    let header = "test"
     let progressSpinner = ProgressSpinnerKit.progressSpinner(
       for: outStream,
-      header: headerText,
+      header: header,
       spinner: spinner
     )
     XCTAssertTrue(progressSpinner is SimpleProgressSpinner)
@@ -39,12 +39,12 @@ final class ProgressSpinnerTests: XCTestCase {
     runProgressSpinner(progressSpinner, withDuration: duration)
 
     let frameCount = Int(ceil(Double(duration) / Double(fps * 100)))
-    var verificationSpinner = spinner
-    let verificationFrames = (0..<frameCount)
-      .reduce(into: "\(headerText)\n") { result, _ in
-        result += "\(verificationSpinner.frame)\n"
+    var _spinner = spinner
+    let expectations = (0..<frameCount)
+      .reduce(into: "\(header)\n") { result, _ in
+        result += "\(_spinner.frame)\n"
       }
-    XCTAssertEqual(byteStream.bytes.validDescription, verificationFrames)
+    XCTAssertEqual(byteStream.bytes.validDescription, expectations)
   }
 
   /// Test progress bar when writing a tty stream.
@@ -55,10 +55,10 @@ final class ProgressSpinnerTests: XCTestCase {
     }
     let outStream = ThreadSafeOutputByteStream(pty.outStream)
     let spinner = Spinner(kind: Spinner.Kind.allCases.randomElement()!)
-    let headerText = "TestHeader"
+    let header = "TestHeader"
     let progressSpinner = ProgressSpinnerKit.progressSpinner(
       for: outStream,
-      header: headerText,
+      header: header,
       spinner: spinner
     )
     XCTAssertTrue(progressSpinner is ProgressSpinner)
@@ -82,15 +82,14 @@ final class ProgressSpinnerTests: XCTestCase {
     let prefix = "\u{1B}[2K"
     XCTAssertTrue(chuzzledOutput.hasPrefix(prefix))
 
-    let outputFrames = String(chuzzledOutput.dropFirst(prefix.utf8.count))
+    let outputs = String(chuzzledOutput.dropFirst(prefix.utf8.count))
       .components(separatedBy: .newlines)
       .filter { !$0.isEmpty && $0 != "\u{1B}[2K" && $0 != "\u{1b}[1A\u{1b}[2K" }
 
-    var verificationSpinner = spinner
-    let verificationFrames = (0..<outputFrames.count).map { _ in
-      return "\u{1B}[32m\u{1B}[1m\(headerText)\u{1B}[0m\u{1B}[32m\(verificationSpinner.frame)\u{1B}[0m"
-    }
-    XCTAssertEqual(outputFrames, verificationFrames)
+    var _spinner = spinner
+    let expectations = (0..<outputs.count)
+      .map { _ in "\u{1B}[32m\u{1B}[1m\(header)\u{1B}[0m\u{1B}[32m\(_spinner.frame)\u{1B}[0m" }
+    XCTAssertEqual(outputs, expectations)
 
   }
 
