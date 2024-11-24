@@ -20,7 +20,7 @@ public protocol ProgressSpinnable {
 }
 
 /// A single line progress bar.
-final class SingleLineProgressSpinnar: ProgressSpinnable {
+final class SingleLineProgressSpinner: ProgressSpinnable {
   private let stream: OutputByteStream
   private let header: String
   private var spinner: Spinner
@@ -50,9 +50,6 @@ final class SingleLineProgressSpinnar: ProgressSpinnable {
       stream.flush()
       isClear = false
     }
-
-    self.stream.send("Start...")
-    self.stream.send("\n")
 
     queue.async { [weak self] in
       guard let self = self else {
@@ -193,7 +190,7 @@ public func progressSpinner(
 
   // If the terminal is dumb, use single line progress spinner.
   if TerminalController.terminalType(stdStream) == .dumb {
-    return SingleLineProgressSpinnar(
+    return SingleLineProgressSpinner(
       stream: stderrStream.stream,
       header: header,
       spinner: spinner
