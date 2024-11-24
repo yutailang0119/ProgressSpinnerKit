@@ -52,7 +52,7 @@ https://github.com/apple/swift-package-manager
 import TSCBasic
 import ProgressSpinnerKit
 
-let spinner = createProgressSpinner(forStream: TSCBasic.stdoutStream, header: " Loading:")
+let spinner = progressSpinner(for: TSCBasic.stdoutStream, header: " Loading:")
 spinner.start()
 // Something on the main thread.
 spinner.stop()
