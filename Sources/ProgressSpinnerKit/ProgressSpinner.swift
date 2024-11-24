@@ -175,7 +175,6 @@ final class ProgressSpinner: ProgressSpinnable {
 public func progressSpinner(
   for stderrStream: ThreadSafeOutputByteStream,
   header: String,
-  isShowStopped: Bool = true,
   spinner: Spinner = Spinner(kind: .box1)
 ) -> ProgressSpinnable {
 
