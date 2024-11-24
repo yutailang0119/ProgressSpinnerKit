@@ -26,7 +26,7 @@ final class SingleLineProgressSpinnar: ProgressSpinnable {
   private let isShowStopped: Bool
   private var spinner: Spinner
   private var isProgressing: Bool
-  private var isClear: Bool // true if haven't drawn anything yet.
+  private var isClear: Bool  // true if haven't drawn anything yet.
   private var displayed: Set<Int> = []
 
   private let queue: DispatchQueue
@@ -85,7 +85,7 @@ final class SimpleProgressSpinner: ProgressSpinnable {
   private let isShowStopped: Bool
   private var spinner: Spinner
   private var isProgressing: Bool
-  private var isClear: Bool // true if haven't drawn anything yet.
+  private var isClear: Bool  // true if haven't drawn anything yet.
 
   private let queue: DispatchQueue
   private let sleepInterval: useconds_t
@@ -190,10 +190,20 @@ final class ProgressSpinner: ProgressSpinnable {
 }
 
 /// Creates colored or simple progress spinner based on the provided output stream.
-public func createProgressSpinner(forStream stderrStream: ThreadSafeOutputByteStream, header: String, isShowStopped: Bool = true, spinner: Spinner = Spinner(kind: .box1)) -> ProgressSpinnable {
+public func createProgressSpinner(
+  forStream stderrStream: ThreadSafeOutputByteStream,
+  header: String,
+  isShowStopped: Bool = true,
+  spinner: Spinner = Spinner(kind: .box1)
+) -> ProgressSpinnable {
 
   guard let stdStream = stderrStream.stream as? LocalFileOutputByteStream else {
-    return SimpleProgressSpinner(stream: stderrStream.stream, header: header, isShowStopped: isShowStopped, spinner: spinner)
+    return SimpleProgressSpinner(
+      stream: stderrStream.stream,
+      header: header,
+      isShowStopped: isShowStopped,
+      spinner: spinner
+    )
   }
 
   // If we have a terminal, use animated progress spinener.
@@ -203,9 +213,19 @@ public func createProgressSpinner(forStream stderrStream: ThreadSafeOutputByteSt
 
   // If the terminal is dumb, use single line progress spinner.
   if TerminalController.terminalType(stdStream) == .dumb {
-    return SingleLineProgressSpinnar(stream: stderrStream.stream, header: header, isShowStopped: isShowStopped, spinner: spinner)
+    return SingleLineProgressSpinnar(
+      stream: stderrStream.stream,
+      header: header,
+      isShowStopped: isShowStopped,
+      spinner: spinner
+    )
   }
 
   // Use simple progress spinner by default.
-  return SimpleProgressSpinner(stream: stderrStream.stream, header: header, isShowStopped: isShowStopped, spinner: spinner)
+  return SimpleProgressSpinner(
+    stream: stderrStream.stream,
+    header: header,
+    isShowStopped: isShowStopped,
+    spinner: spinner
+  )
 }

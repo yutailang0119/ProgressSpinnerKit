@@ -6,23 +6,31 @@ import PackageDescription
 let package = Package(
   name: "ProgressSpinnerKit",
   platforms: [
-    .macOS(.v10_15),
+    .macOS(.v10_15)
   ],
   products: [
-    .library(name: "ProgressSpinnerKit", targets: ["ProgressSpinnerKit"]),
+    .library(name: "ProgressSpinnerKit", targets: ["ProgressSpinnerKit"])
   ],
   dependencies: [
-    .package(url: "https://github.com/apple/swift-tools-support-core", from: "0.7.0"),
+    .package(url: "https://github.com/apple/swift-tools-support-core", from: "0.7.0")
   ],
   targets: [
-    .target(name: "ProgressSpinnerKit",
-            dependencies: [
-              .product(name: "SwiftToolsSupport",
-                       package: "swift-tools-support-core"),
-            ]),
-    .testTarget(name: "ProgressSpinnerKitTests",
-                dependencies: ["ProgressSpinnerKit"]),
-    .executableTarget(name: "Demo",
-                      dependencies: ["ProgressSpinnerKit"]),
+    .target(
+      name: "ProgressSpinnerKit",
+      dependencies: [
+        .product(
+          name: "SwiftToolsSupport",
+          package: "swift-tools-support-core"
+        )
+      ]
+    ),
+    .testTarget(
+      name: "ProgressSpinnerKitTests",
+      dependencies: ["ProgressSpinnerKit"]
+    ),
+    .executableTarget(
+      name: "Demo",
+      dependencies: ["ProgressSpinnerKit"]
+    ),
   ]
 )

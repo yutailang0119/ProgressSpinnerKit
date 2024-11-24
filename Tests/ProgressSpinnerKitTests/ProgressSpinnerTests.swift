@@ -5,18 +5,21 @@
 //  Created by Yutaro Muta on 2018/08/25.
 //
 
-import XCTest
-import TSCLibc
 import Foundation
-@testable import TSCBasic
+import TSCLibc
+import XCTest
+
 @testable import ProgressSpinnerKit
+@testable import TSCBasic
 
 typealias Thread = TSCBasic.Thread
 
 final class ProgressSpinnerTests: XCTestCase {
 
-  static let allTests = [("testSimpleProgresSpinner", testSimpleProgresSpinner),
-                         ("testProgresSpinner", testProgresSpinner)]
+  static let allTests = [
+    ("testSimpleProgresSpinner", testSimpleProgresSpinner),
+    ("testProgresSpinner", testProgresSpinner),
+  ]
 
   /// Test progress bar when writing to a non tty stream.
   func testSimpleProgresSpinner() {
@@ -25,7 +28,12 @@ final class ProgressSpinnerTests: XCTestCase {
     let spinner = Spinner(kind: Spinner.Kind.allCases.randomElement()!)
     let isShowStopped = Bool.random()
     let headerText = "test"
-    let progressSpinner = ProgressSpinnerKit.createProgressSpinner(forStream: outStream, header: headerText, isShowStopped: isShowStopped, spinner: spinner)
+    let progressSpinner = ProgressSpinnerKit.createProgressSpinner(
+      forStream: outStream,
+      header: headerText,
+      isShowStopped: isShowStopped,
+      spinner: spinner
+    )
     XCTAssertTrue(progressSpinner is SimpleProgressSpinner)
 
     let second = Int.random(in: 0..<10)
@@ -35,9 +43,10 @@ final class ProgressSpinnerTests: XCTestCase {
     let frameCount = Int(ceil(Double(duration) / Double(fps * 100)))
     var verificationSpinner = spinner
     let verificationSuffix = isShowStopped ? "Stop\n" : ""
-    let verificationFrames = (0..<frameCount).reduce(into: "\(headerText)\n") { result, _ in
-      result += "\(verificationSpinner.frame)\n"
-    } + verificationSuffix
+    let verificationFrames =
+      (0..<frameCount).reduce(into: "\(headerText)\n") { result, _ in
+        result += "\(verificationSpinner.frame)\n"
+      } + verificationSuffix
     XCTAssertEqual(byteStream.bytes.validDescription, verificationFrames)
   }
 
@@ -51,7 +60,12 @@ final class ProgressSpinnerTests: XCTestCase {
     let spinner = Spinner(kind: Spinner.Kind.allCases.randomElement()!)
     let isShowStopped = Bool.random()
     let headerText = "TestHeader"
-    let progressSpinner = ProgressSpinnerKit.createProgressSpinner(forStream: outStream, header: headerText, isShowStopped: isShowStopped, spinner: spinner)
+    let progressSpinner = ProgressSpinnerKit.createProgressSpinner(
+      forStream: outStream,
+      header: headerText,
+      isShowStopped: isShowStopped,
+      spinner: spinner
+    )
     XCTAssertTrue(progressSpinner is ProgressSpinner)
 
     var output = ""
@@ -104,8 +118,8 @@ private final class PseudoTerminal {
   let master: Int32
   let slave: Int32
   var outStream: LocalFileOutputByteStream
-  
-  init?(){
+
+  init?() {
     var master: Int32 = 0
     var slave: Int32 = 0
     if openpty(&master, &slave, nil, nil, nil) != 0 {
