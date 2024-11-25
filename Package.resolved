@@ -3,7 +3,7 @@
     {
       "identity" : "swift-tools-support-core",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apple/swift-tools-support-core",
+      "location" : "https://github.com/swiftlang/swift-tools-support-core",
       "state" : {
         "revision" : "5b130e04cc939373c4713b91704b0c47ceb36170",
         "version" : "0.7.1"
