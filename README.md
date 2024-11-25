@@ -33,12 +33,12 @@ ProgressSpinnerKit is still in active development.
 import PackageDescription
 
 let package = Package(
-  name: "DemoPackage",
+  name: "ExamplePackage",
   dependencies: [
     .package(url: "https://github.com/yutailang0119/ProgressSpinnerKit", from: "0.5.0"),
   ],
   targets: [
-    .target(name: "DemoTarget", dependencies: ["ProgressSpinnerKit"]),
+    .target(name: "ExampleTarget", dependencies: ["ProgressSpinnerKit"]),
   ]
 )
 ```
