@@ -29,7 +29,7 @@ let package = Package(
       dependencies: ["ProgressSpinnerKit"]
     ),
     .executableTarget(
-      name: "Demo",
+      name: "demo",
       dependencies: ["ProgressSpinnerKit"]
     ),
   ]
