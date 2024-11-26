@@ -9,9 +9,8 @@ import Foundation
 import TSCBasic
 import TSCUtility
 
-private var fps: useconds_t {
-  let fps: Double = 1 / 60
-  return useconds_t(fps * pow(1000, 2))
+private var fps: Double {
+  1 / 60
 }
 
 public protocol ProgressSpinnable {
