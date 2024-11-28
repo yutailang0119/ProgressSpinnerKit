@@ -4,7 +4,7 @@ import TSCBasic
 
 @main
 struct Demo {
-  static func main() {
+  static func main() async {
     let duration = useconds_t(Double(2.0) * pow(1000, 2))
 
     do {
