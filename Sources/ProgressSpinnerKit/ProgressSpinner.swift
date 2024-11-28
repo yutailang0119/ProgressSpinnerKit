@@ -14,8 +14,7 @@ private var fps: Double {
 }
 
 public protocol ProgressSpinnable {
-  func start()
-  func stop()
+  func start() async
 }
 
 /// A single line progress bar.
