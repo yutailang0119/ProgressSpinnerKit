@@ -5,6 +5,19 @@ import TSCBasic
 @main
 struct Demo {
   static func main() async {
+    func run(with spinner: any ProgressSpinnable) async {
+      await withTaskGroup(of: Void.self) { group in
+        group.addTask {
+          await spinner.start()
+        }
+        group.addTask {
+          try? await Task.sleep(for: .seconds(2.0))
+        }
+        defer { group.cancelAll() }
+        await group.next()
+      }
+    }
+
     let duration = useconds_t(Double(2.0) * pow(1000, 2))
 
     do {
