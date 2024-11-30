@@ -18,8 +18,6 @@ struct Demo {
       }
     }
 
-    let duration = useconds_t(Double(2.0) * pow(1000, 2))
-
     do {
       let defaultSpinner = ProgressSpinnerKit.progressSpinner(for: TSCBasic.stderrStream, header: " default:")
       await run(with: defaultSpinner)
