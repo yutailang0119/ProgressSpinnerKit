@@ -52,51 +52,30 @@ final class SimpleProgressSpinner: ProgressSpinnable {
   private let stream: OutputByteStream
   private let header: String
   private var spinner: Spinner
-  private var isProgressing: Bool
-  private var isClear: Bool  // true if haven't drawn anything yet.
-
-  private let queue: DispatchQueue
-  private let sleepInterval: useconds_t
 
   init(stream: OutputByteStream, header: String, spinner: Spinner) {
     self.stream = stream
     self.header = header
     self.spinner = spinner
-    self.isProgressing = false
-    self.isClear = true
-    self.queue = DispatchQueue(label: "progressSpinnerQueue", qos: .background)
-    self.sleepInterval = fps * 100
   }
 
-  func start() {
-    isProgressing = true
+  func start() async {
+    stream.send(header)
+    stream.send("\n")
+    stream.flush()
 
-    if isClear {
-      stream.send(header)
-      stream.send("\n")
-      stream.flush()
-      isClear = false
+    let timer = AsyncStream {
+      try? await Task.sleep(for: .seconds(fps))
     }
 
-    queue.async { [weak self] in
-      guard let self = self else {
-        return
-      }
-      while self.isProgressing {
-        self.stream.send(self.spinner.frame)
-        self.stream.send("\n")
-        self.stream.flush()
-
-        usleep(self.sleepInterval)
+    for await _ in timer {
+      if !Task.isCancelled {
+        stream.send(spinner.frame)
+        stream.send("\n")
+        stream.flush()
       }
     }
-
   }
-
-  func stop() {
-    isProgressing = false
-  }
-
 }
 
 final class ProgressSpinner: ProgressSpinnable {
