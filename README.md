@@ -51,10 +51,12 @@ https://github.com/apple/swift-package-manager
 import TSCBasic
 import ProgressSpinnerKit
 
-let spinner = progressSpinner(for: TSCBasic.stdoutStream, header: " Loading:")
-spinner.start()
+let task = Task {
+  let spinner = progressSpinner(for: TSCBasic.stdoutStream, header: " Loading:")
+  await spinner.start()
+}
 // Something on the main thread.
-spinner.stop()
+task.cancel()
 ```
 
 ## Author
