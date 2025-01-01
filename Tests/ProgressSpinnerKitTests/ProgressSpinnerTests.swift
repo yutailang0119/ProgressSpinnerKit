@@ -22,7 +22,7 @@ final class ProgressSpinnerTests: XCTestCase {
   ]
 
   /// Test progress bar when writing to a non tty stream.
-  func testSimpleProgresSpinner() {
+  func testSimpleProgresSpinner() async {
     let byteStream = BufferedOutputByteStream()
     let outStream = ThreadSafeOutputByteStream(byteStream)
     let spinner = Spinner(kind: Spinner.Kind.allCases.randomElement()!)
@@ -34,16 +34,17 @@ final class ProgressSpinnerTests: XCTestCase {
     )
     XCTAssertTrue(progressSpinner is SimpleProgressSpinner)
 
-    let second = Int.random(in: 0..<10)
-    let duration = useconds_t(Double(second) * pow(1000, 2))
-    runProgressSpinner(progressSpinner, withDuration: duration)
+    let frameCount = Int.random(in: 1..<10)
+    let seconds = Double(frameCount) * 1 / 60
 
-    let frameCount = Int(ceil(Double(duration) / Double(fps * 100)))
+    await run(with: progressSpinner, in: .seconds(seconds))
+
     var _spinner = spinner
-    let expectations = (0..<frameCount)
+    let expectations = (0..<frameCount - 1)
       .reduce(into: "\(header)\n") { result, _ in
         result += "\(_spinner.frame)\n"
       }
+
     XCTAssertEqual(byteStream.bytes.validDescription, expectations)
   }
 
