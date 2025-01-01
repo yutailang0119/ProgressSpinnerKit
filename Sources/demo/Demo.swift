@@ -4,17 +4,23 @@ import TSCBasic
 
 @main
 struct Demo {
-  static func main() {
-    let duration = useconds_t(Double(2.0) * pow(1000, 2))
+  static func main() async {
+    func run(with spinner: any ProgressSpinnable) async {
+      await withTaskGroup(of: Void.self) { group in
+        group.addTask {
+          await spinner.start()
+        }
+        group.addTask {
+          try? await Task.sleep(for: .seconds(2.0))
+        }
+        defer { group.cancelAll() }
+        await group.next()
+      }
+    }
 
     do {
-      let defaultSpinner = ProgressSpinnerKit.progressSpinner(
-        for: TSCBasic.stderrStream,
-        header: " default:"
-      )
-      defaultSpinner.start()
-      usleep(duration)
-      defaultSpinner.stop()
+      let defaultSpinner = ProgressSpinnerKit.progressSpinner(for: TSCBasic.stderrStream, header: " default:")
+      await run(with: defaultSpinner)
     }
 
     do {
@@ -23,9 +29,7 @@ struct Demo {
         header: " box1:",
         spinner: Spinner(kind: .box1)
       )
-      box1.start()
-      usleep(duration)
-      box1.stop()
+      await run(with: box1)
     }
 
     do {
@@ -34,9 +38,7 @@ struct Demo {
         header: " box2:",
         spinner: Spinner(kind: .box2)
       )
-      box2.start()
-      usleep(duration)
-      box2.stop()
+      await run(with: box2)
     }
 
     do {
@@ -45,9 +47,7 @@ struct Demo {
         header: " box3:",
         spinner: Spinner(kind: .box3)
       )
-      box3.start()
-      usleep(duration)
-      box3.stop()
+      await run(with: box3)
     }
 
     do {
@@ -56,9 +56,7 @@ struct Demo {
         header: " box4:",
         spinner: Spinner(kind: .box4)
       )
-      box4.start()
-      usleep(duration)
-      box4.stop()
+      await run(with: box4)
     }
 
     do {
@@ -67,9 +65,7 @@ struct Demo {
         header: " box5:",
         spinner: Spinner(kind: .box5)
       )
-      box5.start()
-      usleep(duration)
-      box5.stop()
+      await run(with: box5)
     }
 
     do {
@@ -78,9 +74,7 @@ struct Demo {
         header: " box6:",
         spinner: Spinner(kind: .box6)
       )
-      box6.start()
-      usleep(duration)
-      box6.stop()
+      await run(with: box6)
     }
 
     do {
@@ -89,9 +83,7 @@ struct Demo {
         header: " box7:",
         spinner: Spinner(kind: .box7)
       )
-      box7.start()
-      usleep(duration)
-      box7.stop()
+      await run(with: box7)
     }
 
     do {
@@ -100,9 +92,7 @@ struct Demo {
         header: " bar1:",
         spinner: Spinner(kind: .bar1)
       )
-      bar1.start()
-      usleep(duration)
-      bar1.stop()
+      await run(with: bar1)
     }
 
     do {
@@ -111,9 +101,7 @@ struct Demo {
         header: " bar2:",
         spinner: Spinner(kind: .bar2)
       )
-      bar2.start()
-      usleep(duration)
-      bar2.stop()
+      await run(with: bar2)
     }
 
     do {
@@ -122,9 +110,7 @@ struct Demo {
         header: " bar3:",
         spinner: Spinner(kind: .bar3)
       )
-      bar3.start()
-      usleep(duration)
-      bar3.stop()
+      await run(with: bar3)
     }
 
     do {
@@ -133,9 +119,7 @@ struct Demo {
         header: " bar4:",
         spinner: Spinner(kind: .bar4)
       )
-      bar4.start()
-      usleep(duration)
-      bar4.stop()
+      await run(with: bar4)
     }
 
     do {
@@ -144,9 +128,7 @@ struct Demo {
         header: " bar5:",
         spinner: Spinner(kind: .bar5)
       )
-      bar5.start()
-      usleep(duration)
-      bar5.stop()
+      await run(with: bar5)
     }
 
     do {
@@ -155,9 +137,7 @@ struct Demo {
         header: " bar6:",
         spinner: Spinner(kind: .bar6)
       )
-      bar6.start()
-      usleep(duration)
-      bar6.stop()
+      await run(with: bar6)
     }
 
     do {
@@ -166,9 +146,7 @@ struct Demo {
         header: " spin1:",
         spinner: Spinner(kind: .spin1)
       )
-      spin1.start()
-      usleep(duration)
-      spin1.stop()
+      await run(with: spin1)
     }
 
     do {
@@ -177,9 +155,7 @@ struct Demo {
         header: " spin2:",
         spinner: Spinner(kind: .spin2)
       )
-      spin2.start()
-      usleep(duration)
-      spin2.stop()
+      await run(with: spin2)
     }
 
     do {
@@ -188,9 +164,7 @@ struct Demo {
         header: " spin3:",
         spinner: Spinner(kind: .spin3)
       )
-      spin3.start()
-      usleep(duration)
-      spin3.stop()
+      await run(with: spin3)
     }
 
     do {
@@ -199,9 +173,7 @@ struct Demo {
         header: " spin4:",
         spinner: Spinner(kind: .spin4)
       )
-      spin4.start()
-      usleep(duration)
-      spin4.stop()
+      await run(with: spin4)
     }
 
     do {
@@ -210,9 +182,7 @@ struct Demo {
         header: " spin5:",
         spinner: Spinner(kind: .spin5)
       )
-      spin5.start()
-      usleep(duration)
-      spin5.stop()
+      await run(with: spin5)
     }
 
     do {
@@ -221,9 +191,7 @@ struct Demo {
         header: " spin6:",
         spinner: Spinner(kind: .spin6)
       )
-      spin6.start()
-      usleep(duration)
-      spin6.stop()
+      await run(with: spin6)
     }
 
     do {
@@ -232,9 +200,7 @@ struct Demo {
         header: " spin7:",
         spinner: Spinner(kind: .spin7)
       )
-      spin7.start()
-      usleep(duration)
-      spin7.stop()
+      await run(with: spin7)
     }
 
     do {
@@ -243,9 +209,7 @@ struct Demo {
         header: " spin8:",
         spinner: Spinner(kind: .spin8)
       )
-      spin8.start()
-      usleep(duration)
-      spin8.stop()
+      await run(with: spin8)
     }
 
     do {
@@ -254,9 +218,7 @@ struct Demo {
         header: " spin9:",
         spinner: Spinner(kind: .spin9)
       )
-      spin9.start()
-      usleep(duration)
-      spin9.stop()
+      await run(with: spin9)
     }
 
     do {
@@ -265,9 +227,7 @@ struct Demo {
         header: " spin10:",
         spinner: Spinner(kind: .spin10)
       )
-      spin10.start()
-      usleep(duration)
-      spin10.stop()
+      await run(with: spin10)
     }
 
     do {
@@ -276,9 +236,7 @@ struct Demo {
         header: " spin11:",
         spinner: Spinner(kind: .spin11)
       )
-      spin11.start()
-      usleep(duration)
-      spin11.stop()
+      await run(with: spin11)
     }
 
     do {
@@ -287,9 +245,7 @@ struct Demo {
         header: " spin12:",
         spinner: Spinner(kind: .spin12)
       )
-      spin12.start()
-      usleep(duration)
-      spin12.stop()
+      await run(with: spin12)
     }
 
     do {
@@ -298,9 +254,7 @@ struct Demo {
         header: " spin13:",
         spinner: Spinner(kind: .spin13)
       )
-      spin13.start()
-      usleep(duration)
-      spin13.stop()
+      await run(with: spin13)
     }
 
     do {
@@ -309,9 +263,7 @@ struct Demo {
         header: " spin14:",
         spinner: Spinner(kind: .spin14)
       )
-      spin14.start()
-      usleep(duration)
-      spin14.stop()
+      await run(with: spin14)
     }
   }
 }

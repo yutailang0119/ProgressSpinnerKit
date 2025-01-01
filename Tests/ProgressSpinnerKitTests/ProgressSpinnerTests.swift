@@ -22,7 +22,7 @@ final class ProgressSpinnerTests: XCTestCase {
   ]
 
   /// Test progress bar when writing to a non tty stream.
-  func testSimpleProgresSpinner() {
+  func testSimpleProgresSpinner() async {
     let byteStream = BufferedOutputByteStream()
     let outStream = ThreadSafeOutputByteStream(byteStream)
     let spinner = Spinner(kind: Spinner.Kind.allCases.randomElement()!)
@@ -34,21 +34,22 @@ final class ProgressSpinnerTests: XCTestCase {
     )
     XCTAssertTrue(progressSpinner is SimpleProgressSpinner)
 
-    let second = Int.random(in: 0..<10)
-    let duration = useconds_t(Double(second) * pow(1000, 2))
-    runProgressSpinner(progressSpinner, withDuration: duration)
+    let frameCount = Int.random(in: 1..<10)
+    let seconds = Double(frameCount) * fps
 
-    let frameCount = Int(ceil(Double(duration) / Double(fps * 100)))
+    await run(with: progressSpinner, in: .seconds(seconds))
+
     var _spinner = spinner
-    let expectations = (0..<frameCount)
+    let expectations = (0..<frameCount - 1)
       .reduce(into: "\(header)\n") { result, _ in
         result += "\(_spinner.frame)\n"
       }
+
     XCTAssertEqual(byteStream.bytes.validDescription, expectations)
   }
 
   /// Test progress bar when writing a tty stream.
-  func testProgresSpinner() {
+  func testProgresSpinner() async {
     guard let pty = PseudoTerminal() else {
       XCTFail("Couldn't create pseudo terminal.")
       return
@@ -70,9 +71,12 @@ final class ProgressSpinnerTests: XCTestCase {
       }
     }
     thread.start()
-    let second = Int.random(in: 0..<10)
-    let duration: useconds_t = useconds_t(Double(second) * pow(1000, 2))
-    runProgressSpinner(progressSpinner, withDuration: duration)
+
+    let frameCount = Int.random(in: 1..<10)
+    let seconds = Double(frameCount) * fps
+
+    await run(with: progressSpinner, in: .seconds(seconds))
+
     pty.closeSlave()
     // Make sure to read the complete output before checking it.
     thread.join()
@@ -84,26 +88,33 @@ final class ProgressSpinnerTests: XCTestCase {
 
     let outputs = String(chuzzledOutput.dropFirst(prefix.utf8.count))
       .components(separatedBy: .newlines)
-      .filter { !$0.isEmpty && $0 != "\u{1B}[2K" && $0 != "\u{1b}[1A\u{1b}[2K" }
+      .filter { !$0.isEmpty && $0 != "\u{1B}[2K" && $0 != "\u{1b}[1A" && $0 != "\u{1b}[1A\u{1b}[2K" }
 
     var _spinner = spinner
     let expectations = (0..<outputs.count)
       .map { _ in "\u{1B}[32m\u{1B}[1m\(header)\u{1B}[0m\u{1B}[32m\(_spinner.frame)\u{1B}[0m" }
+
     XCTAssertEqual(outputs, expectations)
+  }
+}
 
+extension ProgressSpinnerTests {
+  private var fps: Double {
+    1 / 60
   }
 
-  private var fps: useconds_t {
-    let fps: Double = 1 / 60
-    return useconds_t(fps * pow(1000, 2))
+  private func run(with spinner: any ProgressSpinnable, in duration: Duration) async {
+    await withTaskGroup(of: Void.self) { group in
+      group.addTask {
+        await spinner.start()
+      }
+      group.addTask {
+        try? await Task.sleep(for: duration)
+      }
+      defer { group.cancelAll() }
+      await group.next()
+    }
   }
-
-  private func runProgressSpinner(_ spinner: ProgressSpinnable, withDuration duration: useconds_t) {
-    spinner.start()
-    usleep(duration)
-    spinner.stop()
-  }
-
 }
 
 private final class PseudoTerminal {
