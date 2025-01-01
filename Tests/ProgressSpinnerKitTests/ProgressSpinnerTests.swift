@@ -90,20 +90,26 @@ final class ProgressSpinnerTests: XCTestCase {
     let expectations = (0..<outputs.count)
       .map { _ in "\u{1B}[32m\u{1B}[1m\(header)\u{1B}[0m\u{1B}[32m\(_spinner.frame)\u{1B}[0m" }
     XCTAssertEqual(outputs, expectations)
+  }
+}
 
+extension ProgressSpinnerTests {
+  private var fps: Double {
+    1 / 60
   }
 
-  private var fps: useconds_t {
-    let fps: Double = 1 / 60
-    return useconds_t(fps * pow(1000, 2))
+  private func run(with spinner: any ProgressSpinnable, in duration: Duration) async {
+    await withTaskGroup(of: Void.self) { group in
+      group.addTask {
+        await spinner.start()
+      }
+      group.addTask {
+        try? await Task.sleep(for: duration)
+      }
+      defer { group.cancelAll() }
+      await group.next()
+    }
   }
-
-  private func runProgressSpinner(_ spinner: ProgressSpinnable, withDuration duration: useconds_t) {
-    spinner.start()
-    usleep(duration)
-    spinner.stop()
-  }
-
 }
 
 private final class PseudoTerminal {
