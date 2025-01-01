@@ -35,7 +35,7 @@ final class ProgressSpinnerTests: XCTestCase {
     XCTAssertTrue(progressSpinner is SimpleProgressSpinner)
 
     let frameCount = Int.random(in: 1..<10)
-    let seconds = Double(frameCount) * 1 / 60
+    let seconds = Double(frameCount) * fps
 
     await run(with: progressSpinner, in: .seconds(seconds))
 
@@ -73,7 +73,7 @@ final class ProgressSpinnerTests: XCTestCase {
     thread.start()
 
     let frameCount = Int.random(in: 1..<10)
-    let seconds = Double(frameCount) * 1 / 60
+    let seconds = Double(frameCount) * fps
 
     await run(with: progressSpinner, in: .seconds(seconds))
 
