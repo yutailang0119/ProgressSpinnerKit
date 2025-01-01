@@ -49,7 +49,7 @@ final class ProgressSpinnerTests: XCTestCase {
   }
 
   /// Test progress bar when writing a tty stream.
-  func testProgresSpinner() {
+  func testProgresSpinner() async {
     guard let pty = PseudoTerminal() else {
       XCTFail("Couldn't create pseudo terminal.")
       return
@@ -71,9 +71,12 @@ final class ProgressSpinnerTests: XCTestCase {
       }
     }
     thread.start()
-    let second = Int.random(in: 0..<10)
-    let duration: useconds_t = useconds_t(Double(second) * pow(1000, 2))
-    runProgressSpinner(progressSpinner, withDuration: duration)
+
+    let frameCount = Int.random(in: 1..<10)
+    let seconds = Double(frameCount) * 1 / 60
+
+    await run(with: progressSpinner, in: .seconds(seconds))
+
     pty.closeSlave()
     // Make sure to read the complete output before checking it.
     thread.join()
@@ -85,11 +88,12 @@ final class ProgressSpinnerTests: XCTestCase {
 
     let outputs = String(chuzzledOutput.dropFirst(prefix.utf8.count))
       .components(separatedBy: .newlines)
-      .filter { !$0.isEmpty && $0 != "\u{1B}[2K" && $0 != "\u{1b}[1A\u{1b}[2K" }
+      .filter { !$0.isEmpty && $0 != "\u{1B}[2K" && $0 != "\u{1b}[1A" && $0 != "\u{1b}[1A\u{1b}[2K" }
 
     var _spinner = spinner
     let expectations = (0..<outputs.count)
       .map { _ in "\u{1B}[32m\u{1B}[1m\(header)\u{1B}[0m\u{1B}[32m\(_spinner.frame)\u{1B}[0m" }
+
     XCTAssertEqual(outputs, expectations)
   }
 }
