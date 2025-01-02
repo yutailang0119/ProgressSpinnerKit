@@ -117,8 +117,7 @@ public func progressSpinner(
   for stderrStream: ThreadSafeOutputByteStream,
   header: String,
   spinner: Spinner = Spinner(kind: .box1)
-) -> ProgressSpinnable {
-
+) -> any ProgressSpinnable {
   guard let stdStream = stderrStream.stream as? LocalFileOutputByteStream else {
     return SimpleProgressSpinner(
       stream: stderrStream.stream,
